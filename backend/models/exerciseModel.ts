@@ -1,6 +1,11 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 const exerciseSchema = new mongoose.Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
   name: {
     required: true,
     type: String,
