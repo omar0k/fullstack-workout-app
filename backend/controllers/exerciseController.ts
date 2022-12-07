@@ -1,15 +1,14 @@
-import { User } from "./../models/userModel";
 import { Exercise } from "../models/exerciseModel";
 import asyncHandler from "express-async-handler";
 import { Workout } from "../models/workoutModel";
 import express from "express";
 
-// export const getExercises = asyncHandler(
-//   async (req: any, res: express.Response) => {
-//     const workout = await Workout.findById(req.params.id);
-//     res.status(200).json(workout?.exercises);
-//   }
-// );
+/**
+ * @desc set/add exercise to workout
+ * @route POST /api/workouts/:workoutId/exercises/
+ * @access private
+ */
+
 export const addExercise = asyncHandler(
   async (req: any, res: express.Response) => {
     if (!req.body.name || !req.body.sets || !req.body.reps) {
@@ -41,16 +40,37 @@ export const addExercise = asyncHandler(
     res.status(200).json(workout.exercises);
   }
 );
-export const updateExercsise = asyncHandler(async (req: any, res: any) => {
-  const exercise = await Exercise.findById(req.params.exerciseId);
+
+/**
+ * @desc update exercise
+ * @route PUT /api/workouts/:workoutId/exercises/:exerciseIdx
+ * @access private
+ */
+export const updateExercise = asyncHandler(async (req: any, res: any) => {
+  const workout = await Workout.findById(req.params.workoutId);
+  const exercise = workout?.exercises[req.params.exerciseIdx];
   if (!exercise) {
     res.status(400);
     throw new Error("Exercise not found.");
   }
-
-  res.status(200).json(exercise);
+  const updatedExercise = {
+    name: req.body.name,
+    sets: req.body.sets,
+    reps: req.body.reps,
+    _id: exercise._id,
+    user: exercise.user,
+    __v: exercise.__v,
+  };
+  workout.exercises[req.params.exerciseIdx] = updatedExercise;
+  await workout.save();
+  res.status(200).json(updatedExercise);
 });
 
+/**
+ * @desc delete exercise from workout
+ * @route DELETE /api/workouts/:workoutId/exercises/:exerciseIdx
+ * @access private
+ */
 export const deleteExercise = asyncHandler(async (req: any, res: any) => {
   const workout = await Workout.findById(req.params.workoutId);
   const exercise = workout?.exercises[req.params.exerciseIdx];
@@ -58,6 +78,11 @@ export const deleteExercise = asyncHandler(async (req: any, res: any) => {
     res.status(400);
     throw new Error("Exercise not found.");
   }
-  // await exercise.remove();
-  res.json(exercise);
+  if (!workout) {
+    res.status(400);
+    throw new Error("Workout not found.");
+  }
+  workout.exercises.splice(parseInt(req.params.exerciseIdx), 1);
+  await workout.save();
+  res.json(workout);
 });

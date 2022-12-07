@@ -10,7 +10,8 @@ router.delete(
 );
 router.put(
   "/:workoutId/exercises/:exerciseIdx",
-  exerciseController.updateExercsise
+  protect,
+  exerciseController.updateExercise
 );
 router.post("/:workoutId/exercises", protect, exerciseController.addExercise);
 
