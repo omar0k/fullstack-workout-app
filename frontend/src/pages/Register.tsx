@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
+import { RootState } from "../app/store";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -18,11 +19,11 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
-    // @ts-ignore
-    (state) => state.auth
+    (state: RootState) => state.auth
   );
   useEffect(() => {
     if (isError) {
+      // @ts-ignore
       toast.error(message);
     }
     if (isSuccess || user) {

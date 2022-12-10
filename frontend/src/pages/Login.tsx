@@ -1,14 +1,39 @@
 import { useState, useEffect } from "react";
 import { FaSignInAlt } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { login, reset } from "../features/auth/authSlice";
+import Spinner from "../components/Spinner";
+import { AppDispatch, RootState } from "../app/store";
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+  const { user, isError, isLoading, isSuccess, message } = useSelector(
+    (state: RootState) => state.auth
+  );
+  useEffect(() => {
+    if (isError) {
+      // @ts-ignore
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+    }
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
   const { email, password } = loginData;
-  const login = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login", loginData);
+    const userData = {
+      email,
+      password,
+    };
+    dispatch(login(userData));
   };
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginData((prevState) => ({
@@ -16,7 +41,9 @@ const Login = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
     <>
       <section className="heading">
@@ -27,7 +54,7 @@ const Login = () => {
         <p>Login and start creating workouts</p>
       </section>
       <section className="form">
-        <form action="" onSubmit={login}>
+        <form action="" onSubmit={onSubmit}>
           <div className="form-group">
             <input
               type="email"
