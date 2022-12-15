@@ -17,6 +17,7 @@ const WorkoutForm = () => {
         <div className="form-group" id="title">
           <label htmlFor="title">Workout Title</label>
           <input
+            placeholder="Enter workout title"
             type="text"
             name="title"
             id="title"

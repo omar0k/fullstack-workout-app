@@ -10,7 +10,7 @@ const Header = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const onLogout = () => {
     dispatch(logout());
-    dispatch(reset());
+    // dispatch(reset());
     navigate("/");
   };
   return (
