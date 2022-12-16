@@ -12,7 +12,7 @@ const register = async (userData: object) => {
 
 // Logout
 
-const logout = async () => {
+const logout = () => {
   localStorage.removeItem("user");
 };
 // Login

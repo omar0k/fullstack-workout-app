@@ -2,22 +2,17 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../app/store";
 import { AnyAction } from "@reduxjs/toolkit";
 import workoutService from "./workoutService";
+import { Workout } from "../types";
 
 // get workouts from localstorage
-type MyState = {
-  workouts: any[];
-  isError: boolean;
-  isSuccess: boolean;
-  isLoading: boolean;
-  message: string;
-};
-const initialState: MyState = {
-  workouts: [],
+
+const initialState = {
+  workouts: [] as Array<Workout>,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
-} as MyState;
+};
 export const createWorkout: any = createAsyncThunk<
   string,
   string,
@@ -119,9 +114,14 @@ export const workoutSlice = createSlice({
       .addCase(deleteWorkout.fulfilled, (state, action: AnyAction) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.workouts = state.workouts.filter((workout) => {
-          workout._id !== action.payload.id;
-        });
+        state.workouts = state.workouts.filter(
+          (workout: Workout) => workout._id !== action.payload.id
+        );
+      })
+      .addCase(deleteWorkout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
