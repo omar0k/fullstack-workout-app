@@ -2,15 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../app/store";
 import { AnyAction } from "@reduxjs/toolkit";
 import workoutService from "./workoutService";
-import { Workout } from "../types";
+import { WorkoutType } from "../types";
 
 // get workouts from localstorage
 
 const initialState = {
-  workouts: [] as Array<Workout>,
+  workouts: [] as Array<WorkoutType>,
   isError: false,
   isSuccess: false,
   isLoading: false,
+  currentWorkout: Object,
   message: "",
 };
 export const createWorkout: any = createAsyncThunk<
@@ -31,6 +32,17 @@ export const createWorkout: any = createAsyncThunk<
       error.toString();
     return thunkAPI.rejectWithValue(message);
   }
+});
+// get workout with workoutId
+export const getWorkout: any = createAsyncThunk<
+  any,
+  string,
+  { dispatch: AppDispatch; state: RootState }
+>("workouts/getWorkout", async (workoutId, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await workoutService.getWorkout(workoutId, token);
+  } catch (error) {}
 });
 // Get user workouts
 export const getWorkouts: any = createAsyncThunk<
@@ -115,13 +127,24 @@ export const workoutSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.workouts = state.workouts.filter(
-          (workout: Workout) => workout._id !== action.payload.id
+          (workout: WorkoutType) => workout._id !== action.payload.id
         );
       })
       .addCase(deleteWorkout.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(getWorkout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getWorkout.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getWorkout.fulfilled, (state, action) => {
+        state.currentWorkout = action.payload;
       });
   },
 });

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import WorkoutForm from "../components/WorkoutForm";
 import WorkoutItem from "../components/WorkoutItem";
@@ -48,7 +48,7 @@ const Dashboard = () => {
         {workouts.length > 0 ? (
           <div className="workouts">
             {workouts.map((workout) => (
-              <WorkoutItem key={workout._id} workout={workout} />
+                <WorkoutItem key={workout._id} workout={workout} />
             ))}
           </div>
         ) : (

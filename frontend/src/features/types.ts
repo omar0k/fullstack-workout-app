@@ -11,19 +11,19 @@ export interface AuthState {
 }
 
 export interface WorkoutsState {
-  workouts: Workout[];
+  workouts: WorkoutType[];
   isLoading: boolean;
   isError: boolean;
   message: string | null;
+  currentWorkout: WorkoutType | null;
 }
-
 export interface User {
   id: string;
   username: string;
   email: string;
 }
 
-export interface Workout {
+export interface WorkoutType {
   _id: string;
   user: string;
   createdAt: Date;

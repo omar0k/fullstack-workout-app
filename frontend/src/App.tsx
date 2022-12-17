@@ -4,8 +4,9 @@ import Login from "./pages/Login";
 import Header from "./components/Header";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Workout from "./components/Workout";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Dashboard />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/workouts/:workoutId" element={<Workout />} />
           </Routes>
         </div>
       </Router>

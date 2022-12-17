@@ -22,9 +22,17 @@ const getWorkouts = async (token: string) => {
   const response = await axios.get(API_URL, config);
   return response.data;
 };
-// FIX LOGOUT
+// Get workout with workoutId
+const getWorkout = async (workoutId: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(API_URL + workoutId, config);
+  return response.data;
+};
 // Delete user workout
-
 const deleteWorkout = async (workoutId: string, token: string) => {
   const config = {
     headers: {
@@ -38,6 +46,7 @@ const workoutService = {
   createWorkout,
   getWorkouts,
   deleteWorkout,
+  getWorkout,
 };
 
 export default workoutService;
