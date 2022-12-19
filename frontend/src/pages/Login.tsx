@@ -18,7 +18,6 @@ const Login = () => {
   );
   useEffect(() => {
     if (isError) {
-      // @ts-ignore
       toast.error(message);
     }
     if (isSuccess || user) {

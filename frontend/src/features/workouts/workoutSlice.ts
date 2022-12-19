@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "../../app/store";
 import { AnyAction } from "@reduxjs/toolkit";
 import workoutService from "./workoutService";
-import { WorkoutType } from "../types";
+import { CreateExerciseInput, Exercise, WorkoutType } from "../types";
 
 // get workouts from localstorage
 
@@ -11,7 +11,6 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  currentWorkout: Object,
   message: "",
 };
 export const createWorkout: any = createAsyncThunk<
@@ -33,18 +32,6 @@ export const createWorkout: any = createAsyncThunk<
     return thunkAPI.rejectWithValue(message);
   }
 });
-// get workout with workoutId
-export const getWorkout: any = createAsyncThunk<
-  any,
-  string,
-  { dispatch: AppDispatch; state: RootState }
->("workouts/getWorkout", async (workoutId, thunkAPI) => {
-  try {
-    const token = thunkAPI.getState().auth.user.token;
-    return await workoutService.getWorkout(workoutId, token);
-  } catch (error) {}
-});
-// Get user workouts
 export const getWorkouts: any = createAsyncThunk<
   any,
   [],
@@ -86,6 +73,49 @@ export const deleteWorkout: any = createAsyncThunk<
   }
 });
 
+//EXERCISES
+
+export const createExercise: any = createAsyncThunk<
+  string,
+  CreateExerciseInput,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>("exercises/create", async (input, thunkAPI) => {
+  try {
+    const { exerciseData, workoutId } = input;
+    console.log(exerciseData, workoutId);
+    const token: string = thunkAPI.getState().auth.user.token;
+    return await workoutService.createExercise(exerciseData, workoutId, token);
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
+export const deleteExercise: any = createAsyncThunk<
+  object,
+  { exerciseId: string; workoutId: string },
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>("exercises/delete", async (input, thunkAPI) => {
+  try {
+    const token: string = thunkAPI.getState().auth.user.token;
+    const { workoutId, exerciseId } = input;
+    return await workoutService.deleteExercise(exerciseId, workoutId, token);
+  } catch (error: any) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 export const workoutSlice = createSlice({
   name: "workout",
   initialState,
@@ -135,16 +165,26 @@ export const workoutSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(getWorkout.pending, (state) => {
-        state.isLoading = true;
+      .addCase(deleteExercise.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload;
       })
-      .addCase(getWorkout.rejected, (state, action) => {
+      .addCase(deleteExercise.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(getWorkout.fulfilled, (state, action) => {
-        state.currentWorkout = action.payload;
+      .addCase(deleteExercise.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createExercise.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createExercise.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = action.payload;
       });
   },
 });

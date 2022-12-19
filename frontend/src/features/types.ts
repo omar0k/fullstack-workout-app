@@ -35,7 +35,20 @@ export interface WorkoutType {
 }
 
 export interface Exercise {
-  id: string;
   name: string;
+  reps: number;
+  sets: number;
+  _id: string;
   description: string | null;
+}
+export interface CreateExercisePayload {
+  exercise: Exercise;
+}
+export interface CreateExerciseMeta {
+  message: string;
+}
+export interface CreateExerciseInput {
+  workoutId: string;
+  exerciseData: Exercise;
+  token: string;
 }

@@ -23,9 +23,7 @@ const Dashboard = () => {
     if (isError) {
       console.log(message);
     }
-
     dispatch(getWorkouts());
-
     () => {
       dispatch(reset());
     };
@@ -48,7 +46,7 @@ const Dashboard = () => {
         {workouts.length > 0 ? (
           <div className="workouts">
             {workouts.map((workout) => (
-                <WorkoutItem key={workout._id} workout={workout} />
+              <WorkoutItem key={workout._id} workout={workout} />
             ))}
           </div>
         ) : (

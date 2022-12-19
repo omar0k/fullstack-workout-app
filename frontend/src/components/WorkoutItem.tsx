@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch } from "../app/store";
-import { Workout } from "../features/types";
+import { WorkoutType } from "../features/types";
 import { deleteWorkout } from "../features/workouts/workoutSlice";
 
-const workoutItem = ({ workout }: { workout: Workout }) => {
+const workoutItem = ({ workout }: { workout: WorkoutType }) => {
   const dispatch: AppDispatch = useDispatch();
   const handleDelete = () => {
     dispatch(deleteWorkout(workout._id));

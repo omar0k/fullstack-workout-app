@@ -4,12 +4,12 @@ import * as exerciseController from "../controllers/exerciseController";
 import { protect } from "../middleware/authMiddleware";
 // router.get("/", protect, exerciseController.getExercises);
 router.delete(
-  "/:workoutId/exercises/:exerciseIdx",
+  "/:workoutId/exercises/:exerciseId",
   protect,
   exerciseController.deleteExercise
 );
 router.put(
-  "/:workoutId/exercises/:exerciseIdx",
+  "/:workoutId/exercises/:exerciseId",
   protect,
   exerciseController.updateExercise
 );

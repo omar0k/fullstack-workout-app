@@ -33,9 +33,13 @@ export const login: any = createAsyncThunk(
   async (user: object, thunkAPI) => {
     try {
       return await authService.login(user);
-    } catch (error) {
-      let message = "Unknown error";
-      if (error instanceof Error) message = error.message || error.toString();
+    } catch (error: any) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
       return thunkAPI.rejectWithValue(message);
     }
   }

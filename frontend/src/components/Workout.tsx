@@ -1,33 +1,54 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorkout, getWorkouts } from "../features/workouts/workoutSlice";
+import {
+  deleteExercise,
+  getWorkouts,
+  reset,
+} from "../features/workouts/workoutSlice";
 import { AppDispatch } from "../app/store";
 import { RootState } from "../app/store";
 import { useEffect } from "react";
-import { WorkoutsState, WorkoutType } from "../features/types";
+import ExerciseForm from "./ExerciseForm";
+import Spinner from "./Spinner";
+import ExerciseComponent from "./Exercise";
+
 const Workout = () => {
-  const workoutId = useParams<{ workoutId: string }>();
+  const { workoutId } = useParams<{ workoutId: string }>();
   const dispatch: AppDispatch = useDispatch();
-  const { currentWorkout } = useSelector((state: RootState) => state.workouts);
+  const { workouts, isError, isLoading, message } = useSelector(
+    (state: RootState) => state.workouts
+  );
   useEffect(() => {
+    if (isError) {
+      console.log(message);
+    }
     dispatch(getWorkouts());
-    dispatch(getWorkout(workoutId.workoutId));
-  }, [dispatch, workoutId]);
-  console.log(currentWorkout.exercises);
+    console.log("testing");
+    () => {
+      dispatch(reset());
+    };
+  }, [dispatch, isError, message]);
+  const selectedWorkout = workouts.find((workout) => workout._id === workoutId);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
   return (
-    <div>
-      {currentWorkout &&
-      currentWorkout.exercises &&
-      currentWorkout.exercises.length > 0 ? (
-        <ul>
-          {currentWorkout.exercises.map((exercise) => (
-            <li key={exercise.id}>{exercise.name}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No exercises found for this workout</p>
-      )}
-    </div>
+    selectedWorkout && (
+      <>
+        <div>
+          <h2>{selectedWorkout.title}</h2>
+          <ExerciseForm />
+          <ul className="exercsies-list">
+            {selectedWorkout.exercises.map((exercise) => (
+              <li key={exercise._id}>
+                <ExerciseComponent exercise={exercise} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </>
+    )
   );
 };
 

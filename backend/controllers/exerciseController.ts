@@ -48,11 +48,19 @@ export const addExercise = asyncHandler(
  */
 export const updateExercise = asyncHandler(async (req: any, res: any) => {
   const workout = await Workout.findById(req.params.workoutId);
-  const exercise = workout?.exercises[req.params.exerciseIdx];
-  if (!exercise) {
+  const exerciseId = req.params.exerciseId;
+  if (!workout) {
+    res.status(400);
+    throw new Error("Workout not found");
+  }
+  const exericseIndex = workout?.exercises.findIndex(
+    (exercise) => exercise._id == exerciseId
+  );
+  if (exericseIndex === -1) {
     res.status(400);
     throw new Error("Exercise not found.");
   }
+  const exercise = workout?.exercises[exericseIndex];
   const updatedExercise = {
     name: req.body.name,
     sets: req.body.sets,
@@ -61,7 +69,7 @@ export const updateExercise = asyncHandler(async (req: any, res: any) => {
     user: exercise.user,
     __v: exercise.__v,
   };
-  workout.exercises[req.params.exerciseIdx] = updatedExercise;
+  workout.exercises[exericseIndex] = updatedExercise;
   await workout.save();
   res.status(200).json(updatedExercise);
 });
@@ -73,16 +81,19 @@ export const updateExercise = asyncHandler(async (req: any, res: any) => {
  */
 export const deleteExercise = asyncHandler(async (req: any, res: any) => {
   const workout = await Workout.findById(req.params.workoutId);
-  const exercise = workout?.exercises[req.params.exerciseIdx];
-  if (!exercise) {
-    res.status(400);
-    throw new Error("Exercise not found.");
-  }
   if (!workout) {
     res.status(400);
     throw new Error("Workout not found.");
   }
-  workout.exercises.splice(parseInt(req.params.exerciseIdx), 1);
+  const exerciseId = req.params.exerciseId;
+  const exerciseIndex = workout.exercises.findIndex(
+    (exercise: any) => exercise._id.toString() === exerciseId
+  );
+  if (exerciseIndex === -1) {
+    res.status(400);
+    throw new Error("Exercise not found.");
+  }
+  workout.exercises.splice(exerciseIndex, 1);
   await workout.save();
   res.json(workout);
 });
