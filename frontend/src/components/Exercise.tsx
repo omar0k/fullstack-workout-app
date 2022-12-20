@@ -1,7 +1,9 @@
+import { Button, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import { Exercise } from "../features/types";
+
 import { deleteExercise } from "../features/workouts/workoutSlice";
 
 const ExerciseComponent = ({ exercise }: { exercise: Exercise }) => {
@@ -13,15 +15,23 @@ const ExerciseComponent = ({ exercise }: { exercise: Exercise }) => {
       dispatch(deleteExercise({ workoutId, exerciseId }));
     };
   };
-  
+
   return (
-    <>
-      <button onClick={deleteExer(exercise._id)}>X</button>
-      <h3>{exercise.name}</h3>
-      <p>{exercise.description}</p>
-      <p>Sets: {exercise.sets}</p>
-      <p>Reps: {exercise.reps}</p>
-    </>
+    <Card bg="dark">
+      <Card.Body className="text-light">
+        <h3 className="text-light">{exercise.name}</h3>
+        <p>{exercise.description}</p>
+        <p>Sets: {exercise.sets}</p>
+        <p>Reps: {exercise.reps}</p>
+        <Button
+          variant="danger"
+          className=""
+          onClick={deleteExer(exercise._id)}
+        >
+          Delete exercise
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

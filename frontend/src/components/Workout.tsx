@@ -1,16 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteExercise,
-  getWorkouts,
-  reset,
-} from "../features/workouts/workoutSlice";
+import { getWorkouts, reset } from "../features/workouts/workoutSlice";
 import { AppDispatch } from "../app/store";
 import { RootState } from "../app/store";
 import { useEffect } from "react";
 import ExerciseForm from "./ExerciseForm";
 import Spinner from "./Spinner";
 import ExerciseComponent from "./Exercise";
+import { Container, ListGroup, Row, Col } from "react-bootstrap";
 
 const Workout = () => {
   const { workoutId } = useParams<{ workoutId: string }>();
@@ -35,19 +32,23 @@ const Workout = () => {
   }
   return (
     selectedWorkout && (
-      <>
-        <div>
-          <h2>{selectedWorkout.title}</h2>
-          <ExerciseForm />
-          <ul className="exercsies-list">
-            {selectedWorkout.exercises.map((exercise) => (
-              <li key={exercise._id}>
-                <ExerciseComponent exercise={exercise} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </>
+      <Container>
+        <Row>
+          <Col>
+            <h2 className="text-center mt-3 text-red">
+              {selectedWorkout.title}
+            </h2>
+            <ExerciseForm />
+            <ListGroup>
+              {selectedWorkout.exercises.map((exercise) => (
+                <ListGroup.Item key={exercise._id}>
+                  <ExerciseComponent exercise={exercise} />
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
     )
   );
 };

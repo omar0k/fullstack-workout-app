@@ -3,12 +3,19 @@ import { AppDispatch, RootState } from "../app/store";
 import React, { useEffect, useState } from "react";
 import { createExercise, getWorkouts } from "../features/workouts/workoutSlice";
 import { useParams } from "react-router-dom";
+import {
+  Button,
+  Container,
+  Form,
+  FormControl,
+  FormGroup,
+} from "react-bootstrap";
 const ExerciseForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    sets: 0,
-    reps: 0,
+    sets: 1,
+    reps: 1,
   });
   const { name, sets, reps, description } = formData;
   const { workouts } = useSelector((state: RootState) => state.workouts);
@@ -31,72 +38,65 @@ const ExerciseForm = () => {
     dispatch(createExercise({ exerciseData, workoutId }));
   };
   return (
-    <>
-      <section>
+    <Container>
+      <Container>
         <h1>Create Exercise</h1>
-      </section>
-      <section className="form">
-        <form onSubmit={submitExercise}>
-          <div className="form-group">
-            <label htmlFor="name">Exercise Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              required
-              value={name}
-              name="name"
-              placeholder="Exercise name"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Exercise Description</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              value={description}
-              name="description"
-              placeholder="Exercise description"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="sets">Number of Sets</label>
-            <input
-              type="number"
-              className="form-control"
-              id="sets"
-              min={0}
-              max={100}
-              value={sets}
-              name="sets"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="reps">Number of Reps</label>
-            <input
-              type="number"
-              min={0}
-              max={100}
-              className="form-control"
-              id="reps"
-              value={reps}
-              name="reps"
-              //   placeholder="Exercise name"
-              onChange={onChange}
-            />
-          </div>
-          <div className="form-group">
-            <button className="btn btn-block" type="submit">
-              Add exercise
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+      </Container>
+      <Form onSubmit={submitExercise}>
+        <Form.Group>
+          <FormControl
+            type="text"
+            className="form-control"
+            id="name"
+            required
+            value={name}
+            name="name"
+            placeholder="Exercise name"
+            onChange={onChange}
+          />
+          {/* <label htmlFor="name">Exercise Name</label> */}
+          <FormControl
+            type="text"
+            className="form-control"
+            id="description"
+            value={description}
+            required
+            name="description"
+            placeholder="Exercise description"
+            onChange={onChange}
+          />
+          <Form.Label>Number of sets:</Form.Label>
+          <FormControl
+            type="number"
+            className="form-control"
+            id="sets"
+            min={1}
+            required
+            max={100}
+            value={sets}
+            name="sets"
+            placeholder="Number of sets"
+            onChange={onChange}
+          />
+          <Form.Label>Number of reps:</Form.Label>
+          <FormControl
+            type="number"
+            min={1}
+            max={100}
+            className="form-control"
+            id="reps"
+            value={reps}
+            required
+            name="reps"
+            placeholder="Number of reps"
+            onChange={onChange}
+          />
+          <Button className="btn btn-block" type="submit">
+            Add exercise
+          </Button>
+        </Form.Group>
+      </Form>
+    </Container>
   );
 };
 export default ExerciseForm;

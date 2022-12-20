@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button, Container, FormControl } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "../app/store";
-import { createWorkout } from "../features/workouts/workoutSlice";
+import { Form } from "react-bootstrap";
+import { AppDispatch, RootState } from "../app/store";
+import { createWorkout, reset } from "../features/workouts/workoutSlice";
+import { toast } from "react-toastify";
 const WorkoutForm = () => {
   const dispatch: AppDispatch = useDispatch();
   const onSubmit = (e: React.FormEvent) => {
@@ -12,26 +15,28 @@ const WorkoutForm = () => {
 
   const [title, setTitle] = useState("");
   return (
-    <section className="form">
-      <form onSubmit={onSubmit}>
-        <div className="form-group" id="title">
-          <label htmlFor="title">Workout Title</label>
-          <input
+    <Container>
+      <Form onSubmit={onSubmit}>
+        <Form.Group>
+          {/* <Form.Label htmlFor="title"></Form.Label> */}
+          <FormControl
             placeholder="Enter workout title"
             type="text"
             name="title"
             id="title"
             value={title}
+            required
             onChange={(e) => setTitle(e.target.value)}
           />
-        </div>
-        <div className="form-group">
-          <button type="submit" className="btn btn-block">
-            Create Workout
-          </button>
-        </div>
-      </form>
-    </section>
+        </Form.Group>
+        <Button variant="primary" type="submit" className="my-2">
+          Create Workout
+        </Button>
+      </Form>
+    </Container>
   );
 };
 export default WorkoutForm;
+function useEFfect(arg0: () => void, arg1: (string | boolean)[]) {
+  throw new Error("Function not implemented.");
+}

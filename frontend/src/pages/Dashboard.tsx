@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import WorkoutForm from "../components/WorkoutForm";
 import WorkoutItem from "../components/WorkoutItem";
 import Spinner from "../components/Spinner";
 import { getWorkouts, reset } from "../features/workouts/workoutSlice";
 import { RootState } from "../app/store";
+import { Container, Row } from "react-bootstrap";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -34,26 +35,28 @@ const Dashboard = () => {
   }
 
   return (
-    <>
-      <section className="heading">
-        <h1>Welcome {user && user.name}</h1>
-        <p>Workouts Dashboard</p>
-      </section>
+    <Container>
+      <Container className="my-4">
+        <h1>Welcome {user && user.name}!</h1>
+        <h5>Workouts Dashboard</h5>
+      </Container>
 
       <WorkoutForm />
 
-      <section className="content">
+      <Container className="my-5">
         {workouts.length > 0 ? (
-          <div className="workouts">
+          <Row>
             {workouts.map((workout) => (
               <WorkoutItem key={workout._id} workout={workout} />
             ))}
-          </div>
+          </Row>
         ) : (
-          <h3>You have not set any workouts</h3>
+          <Row>
+            <h3>You have not set any workouts</h3>
+          </Row>
         )}
-      </section>
-    </>
+      </Container>
+    </Container>
   );
 };
 

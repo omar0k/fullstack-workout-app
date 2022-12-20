@@ -35,6 +35,7 @@ export interface WorkoutType {
 }
 
 export interface Exercise {
+  gif: string;
   name: string;
   reps: number;
   sets: number;

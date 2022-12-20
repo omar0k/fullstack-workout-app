@@ -1,3 +1,4 @@
+import { Button, Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppDispatch } from "../app/store";
@@ -10,17 +11,17 @@ const workoutItem = ({ workout }: { workout: WorkoutType }) => {
     dispatch(deleteWorkout(workout._id));
   };
   return (
-    <div className="workout" onClick={() => console.log(workout)}>
-      <Link to={`workouts/${workout._id}`}>
-        <div>
-          <div>{new Date(workout.createdAt).toLocaleString("en-US")}</div>
+    <Card bg="dark" className="my-1">
+      <Card.Body>
+        <Link to={`workouts/${workout._id}`}>
           <h2>{workout.title}</h2>
-        </div>
-      </Link>
-      <button onClick={handleDelete} className="close">
-        X
-      </button>
-    </div>
+        </Link>
+        <Button variant="danger" onClick={handleDelete}>
+          Delete workout
+        </Button>
+        {/* <p>{new Date(workout.createdAt).toLocaleString("en-US")}</p> */}
+      </Card.Body>
+    </Card>
   );
 };
 
