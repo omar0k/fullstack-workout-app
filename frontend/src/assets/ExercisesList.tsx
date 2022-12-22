@@ -145,6 +145,6 @@ export const ExercisesList = [
     reps: 1,
     description:
       "A full body exercise that targets the core and the upper body.",
-    image: "https://example.com/mountain-climber.jpg",
+    image: "https://homeworkouts.org/wp-content/uploads/anim-mountain-climbers.gif",
   },
 ];

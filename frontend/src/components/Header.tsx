@@ -22,13 +22,15 @@ const Header = () => {
         <Navbar.Brand as={Link} to="/">
           Fitness Bud
         </Navbar.Brand>
-        <Nav.Link
-          as={Link}
-          to="/exercises"
-          className="align-middle text-secondary"
-        >
-          Exercises List
-        </Nav.Link>
+        {user ? (
+          <Nav.Link
+            as={Link}
+            to="/exercises"
+            className="align-middle text-secondary"
+          >
+            Exercises List
+          </Nav.Link>
+        ) : null}
       </div>
       <Nav className="ms-auto px-5">
         {user ? (

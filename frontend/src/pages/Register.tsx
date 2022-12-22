@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { register, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
 import { RootState } from "../app/store";
+import { Button, Container, Form, FormControl } from "react-bootstrap";
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -55,50 +56,51 @@ const Register = () => {
     return <Spinner />;
   }
   return (
-    <>
-      <section className="heading">
+    <Container className="mt-5 p-5">
+      <Container className="text-center">
         <h1>
           <FaUser /> Register
         </h1>
         <p>Please create an account</p>
-      </section>
-      <section className="form">
-        <form onSubmit={onSubmit}>
-          <div className="form-group">
-            <input
+      </Container>
+      <Container className="d-flex justify-content-center ">
+        <Form onSubmit={onSubmit}>
+          <Form.Group>
+            <FormControl
               type="text"
-              className="form-control"
+              style={{ width: "300px" }}
+              className="mb-2"
               id="name"
               value={name}
               name="name"
               placeholder="Enter your name"
               onChange={onChange}
             />
-          </div>
-          <div className="form-group">
-            <input
+          </Form.Group>
+          <Form.Group>
+            <FormControl
               type="email"
-              className="form-control"
+              className="mb-2"
               id="email"
               value={email}
               name="email"
               onChange={onChange}
               placeholder="Enter your email"
             />
-          </div>
-          <div className="form-group">
-            <input
+          </Form.Group>
+          <Form.Group>
+            <FormControl
               type="password"
-              className="form-control"
+              className="mb-2"
               id="password"
               value={password}
               name="password"
               onChange={onChange}
               placeholder="Enter password"
             />
-          </div>
-          <div className="form-group">
-            <input
+          </Form.Group>
+          <Form.Group>
+            <FormControl
               type="password"
               className="form-control"
               id="password2"
@@ -107,15 +109,15 @@ const Register = () => {
               onChange={onChange}
               placeholder="Confirm password"
             />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-block">
-              Submit
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+          </Form.Group>
+          <Form.Group className="mt-2 text-center">
+            <Button type="submit" className="w-100">
+              Register
+            </Button>
+          </Form.Group>
+        </Form>
+      </Container>
+    </Container>
   );
 };
 export default Register;

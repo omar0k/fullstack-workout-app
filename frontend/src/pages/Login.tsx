@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { login, reset } from "../features/auth/authSlice";
 import Spinner from "../components/Spinner";
 import { AppDispatch, RootState } from "../app/store";
+import { Button, Container, Form, FormControl } from "react-bootstrap";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
@@ -44,46 +45,47 @@ const Login = () => {
     return <Spinner />;
   }
   return (
-    <>
-      <section className="heading">
-        <h1>
+    <Container className="mt-5 p-5">
+      <Container className="text-center">
+        <h1 className="text-center ">
           <FaSignInAlt />
           Login
         </h1>
         <p>Login and start creating workouts</p>
-      </section>
-      <section className="form">
-        <form action="" onSubmit={onSubmit}>
-          <div className="form-group">
-            <input
+      </Container>
+      <Container className="d-flex justify-content-center">
+        <Form onSubmit={onSubmit}>
+          <Form.Group>
+            <FormControl
               type="email"
               name="email"
               id="email"
-              className="form-control"
+              // style={{ width: "50%" }}
+              className="mb-2"
               onChange={onChange}
               placeholder="Enter email"
               value={email}
             />
-          </div>
-          <div className="form-group">
-            <input
+          </Form.Group>
+          <Form.Group>
+            <FormControl
               type="password"
               id="password"
+              style={{ width: "300px" }}
               value={password}
               placeholder="Enter password"
               onChange={onChange}
-              className="form-control"
               name="password"
             />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-block">
+          </Form.Group>
+          <Form.Group className="mt-2 text-center">
+            <Button type="submit" className="btn btn-block w-100">
               Login
-            </button>
-          </div>
-        </form>
-      </section>
-    </>
+            </Button>
+          </Form.Group>
+        </Form>
+      </Container>
+    </Container>
   );
 };
 export default Login;

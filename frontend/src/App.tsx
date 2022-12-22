@@ -20,6 +20,10 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/exercises" element={<Exercises />} />
             <Route path="/workouts/:workoutId" element={<Workout />} />
+            <Route
+              path="/workouts/:workoutId/exercises"
+              element={<Exercises />}
+            />
           </Routes>
         </div>
       </Router>

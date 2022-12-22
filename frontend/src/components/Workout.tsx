@@ -31,8 +31,8 @@ const Workout = () => {
     return <Spinner />;
   }
   return (
-    selectedWorkout && (
-      <Container>
+    <Container>
+      {selectedWorkout && (
         <Row>
           <Col>
             <h2 className="text-center mt-3 text-red">
@@ -48,8 +48,8 @@ const Workout = () => {
             </ListGroup>
           </Col>
         </Row>
-      </Container>
-    )
+      )}
+    </Container>
   );
 };
 

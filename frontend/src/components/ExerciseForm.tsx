@@ -2,14 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/store";
 import React, { useEffect, useState } from "react";
 import { createExercise, getWorkouts } from "../features/workouts/workoutSlice";
-import { useParams } from "react-router-dom";
-import {
-  Button,
-  Container,
-  Form,
-  FormControl,
-  FormGroup,
-} from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import { Button, Container, Form, FormControl } from "react-bootstrap";
 const ExerciseForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -18,7 +12,6 @@ const ExerciseForm = () => {
     reps: 1,
   });
   const { name, sets, reps, description } = formData;
-  const { workouts } = useSelector((state: RootState) => state.workouts);
   const { workoutId } = useParams<{ workoutId: string }>();
   const dispatch: AppDispatch = useDispatch();
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +33,23 @@ const ExerciseForm = () => {
   return (
     <Container>
       <Container>
-        <h1>Create Exercise</h1>
+        <h2>Create Exercise</h2>
+        <h6>
+          or pick from the{" "}
+          <Link
+            to={`/workouts/${workoutId}/exercises`}
+            style={{ color: "blue", textDecoration: "underline" }}
+          >
+            Exercices
+          </Link>{" "}
+          list
+        </h6>
       </Container>
       <Form onSubmit={submitExercise}>
         <Form.Group>
           <FormControl
             type="text"
-            className="form-control"
+            className="mb-2"
             id="name"
             required
             value={name}
@@ -83,7 +86,7 @@ const ExerciseForm = () => {
             type="number"
             min={1}
             max={100}
-            className="form-control"
+            className="mb-2"
             id="reps"
             value={reps}
             required
